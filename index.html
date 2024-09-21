@@ -69,7 +69,7 @@
 
 <!-- If not using comments, you can remove the data-key and data-url attributes -->
 
-<body data-key="bfb9cfea33ab7ae21a315fbd6f065a815d3e20ff2f007aa2ca" data-url="https://api.ulems.my.id/" style="overflow-y: hidden;">
+<body data-key="" data-url="" style="overflow-y: hidden;">
 
     <!-- Navbar Bottom -->
     <nav class="navbar bg-dark navbar-expand fixed-bottom rounded-top-4 p-0" id="navbar-menu">
@@ -623,6 +623,34 @@
             </div>
         </div>
     </div>
+
+    <!-- Comment -->
+    <script>
+        // Memuat file JSON
+        fetch('config.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(config => {
+                // Mengatur data-key dan data-url dari JSON
+                document.body.setAttribute('data-key', config.key);
+                document.body.setAttribute('data-url', config.url);
+
+                // Ambil nilai dari data attribute
+                const dataKey = document.body.getAttribute('data-key');
+                const dataUrl = document.body.getAttribute('data-url');
+                
+                console.log('Data Key:', dataKey);
+                console.log('Data URL:', dataUrl);
+            })
+            .catch(error => {
+                console.error('Error loading config:', error);
+            });
+    </script>
+    <!-- Comment -->
 
     <!-- Dependencies JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha256-CDOy6cOibCWEdsRiZuaHf8dSGGJRYuBGC+mjoJimHGw=" crossorigin="anonymous"></script>
