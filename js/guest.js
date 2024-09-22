@@ -63,8 +63,8 @@ export const guest = (() => {
     };
 
     const name = () => {
-        const name = (new URLSearchParams(window.location.search)).get('to').replace('_', ' ');
-        console.log(name);
+        const name = (new URLSearchParams(window.location.search)).get('to')
+        const realName = name.replace("-", " ");
         const guest = document.getElementById('guest-name');
 
 
@@ -73,13 +73,13 @@ export const guest = (() => {
         } else {
             const div = document.createElement('div');
             div.classList.add('m-2');
-            div.innerHTML = `<p class="mt-0 mb-1 mx-0 p-0">${guest.getAttribute('data-message')}</p><h2>${util.escapeHtml(name)}</h2>`;
+            div.innerHTML = `<p class="mt-0 mb-1 mx-0 p-0">${guest.getAttribute('data-message')}</p><h2>${util.escapeHtml(realName)}</h2>`;
             guest.appendChild(div);
         }
 
         const form = document.getElementById('form-name');
         if (form) {
-            form.value = name;
+            form.value = realName;
         }
     };
 
