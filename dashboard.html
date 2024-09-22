@@ -427,7 +427,7 @@
 
                 try {
                 // Kirim data menggunakan fetch API
-                const response = await fetch("http://staging.ngunduh-api.munola.com/api/invitee", {
+                const response = await fetch(config.url + "api/invitee", {
                     method: "POST",
                     headers: {
                     'Accept': 'application/json',
