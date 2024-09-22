@@ -5,6 +5,7 @@ import { theme } from './theme.js';
 import { navbar } from './navbar.js';
 import { session } from './session.js';
 import { comment } from './comment.js';
+import { invitee } from './invitee.js';
 import { pagination } from './pagination.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -20,5 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.navbar = navbar;
     window.session = session;
     window.comment = comment;
+    window.invitee = invitee;
     window.pagination = pagination;
 });

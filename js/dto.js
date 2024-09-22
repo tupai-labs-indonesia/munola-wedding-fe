@@ -40,6 +40,16 @@ export const dto = (() => {
         };
     });
 
+    const postInviteeResponse = (({ name, phone_number, invitation_link, whatsapp_link}) => {
+
+        return {
+            name,
+            phone_number,
+            invitation_link,
+            whatsapp_link
+        };
+    });
+
     const statusResponse = (({ status }) => {
         return {
             status,
@@ -84,6 +94,15 @@ export const dto = (() => {
         };
     });
 
+    const postInviteeRequest = ((name, phone_number, base_url, type) => {
+        return {
+            name,
+            phone_number,
+            base_url,
+            type
+        };
+    });
+
     const postSessionRequest = ((email, password) => {
         return {
             email: email,
@@ -110,5 +129,7 @@ export const dto = (() => {
         postCommentRequest,
         postSessionRequest,
         updateCommentRequest,
+        postInviteeRequest,
+        postInviteeResponse
     };
 })();
