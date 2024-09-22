@@ -65,7 +65,7 @@ export const guest = (() => {
     const name = () => {
         const name = (new URLSearchParams(window.location.search)).get('to');
 
-        name.replace('_', ' ');
+        name = name.replace('_', ' ');
 
         const guest = document.getElementById('guest-name');
 
