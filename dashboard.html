@@ -391,6 +391,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         // Memuat file JSON
             fetch('config.json')
@@ -426,17 +427,31 @@
 
                 try {
                 // Kirim data menggunakan fetch API
-                const response = await fetch(dataUrl + "api/invitee", {
+                const response = await fetch("http://staging.ngunduh-api.munola.com/api/invitee", {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json"
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(body)
                 });
 
+                const responseBody = await response.json();
+
                 // Cek apakah request sukses
                 if (response.ok) {
-                    alert("Undangan berhasil dikirim!");
+                        Swal.fire({
+                        footer: "munola.com",
+                        title: "Kirim Undangan?",
+                        text: "Untuk: " + responseBody.data.name + "(" + responseBody.data.phone_number + ")",
+                        icon: "success",
+                        confirmButtonColor: "#075E54",
+                        confirmButtonText: "Kirim WhatsApp",
+                        }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = responseBody.data.whatsapp_link;
+                        }
+                    });
                 } else {
                     const errorData = await response.json();
                     alert(`Error: ${errorData.message}`);
