@@ -3,19 +3,28 @@ import { util } from './util.js';
 import { session } from './session.js';
 import { request, HTTP_GET, HTTP_POST, HTTP_DELETE, HTTP_PUT } from './request.js';
 
-export const invitee = (() => {
+let config = {};
 
+const loadConfig = async () => {
+    const response = await fetch('../config.json');
+    if (!response.ok) {
+        throw new Error('Failed to load config.json');
+    }
+    config = await response.json();
+};
+
+export const invitee = (() => {
     const send = async (button) => {
         const id = button.getAttribute('data-uuid');
 
         const name = document.getElementById("form-recipient-name");
         const phone = document.getElementById("form-recipient-phone");
 
-        if (name.value.length == 0) {
+        if (name.value.length === 0) {
             alert('Please fill name');
             return;
         }
-        if (phone.value.length == 0) {
+        if (phone.value.length === 0) {
             alert('Please fill phone');
             return;
         }
@@ -27,10 +36,10 @@ export const invitee = (() => {
 
         const response = await request(HTTP_POST, '/api/invitee')
             .token(session.getToken())
-            .body(dto.postInviteeRequest(name.value, phone.value, "https://staging.munola.com", "kakap"))
+            .body(dto.postInviteeRequest(name.value, phone.value, config.url, config.type))
             .send(dto.postInviteeResponse)
             .then((res) => {
-                if(res.code == 201){
+                if (res.code === 201) {
                     Swal.fire({
                         footer: "munola.com",
                         title: "Kirim Undangan?",
@@ -38,7 +47,7 @@ export const invitee = (() => {
                         icon: "success",
                         confirmButtonColor: "#075E54",
                         confirmButtonText: "Kirim WhatsApp",
-                        }).then((result) => {
+                    }).then((result) => {
                         if (result.isConfirmed) {
                             window.location.href = res.data.whatsapp_link;
                         }
@@ -54,6 +63,12 @@ export const invitee = (() => {
     };
 
     return {
-        send
+        send,
+        loadConfig // Make sure to expose loadConfig if needed elsewhere
     }
 })();
+
+// Load the configuration when the module is initialized
+loadConfig().catch(err => {
+    console.error(err);
+});
