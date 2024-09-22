@@ -215,12 +215,19 @@
 
                         <!-- Form -->
                         <div class="bg-theme-light p-3 my-2 rounded-4 shadow">
-                            <label for="form-comment" class="form-label fw-bold"><i class="fa-solid fa-comment me-1"></i>Comment</label>
-                            <textarea class="form-control shadow-sm mb-3 rounded-4" id="form-comment" name="form-comment" placeholder="Type to comment"></textarea>
-
-                            <div class="d-flex justify-content-end mb-0">
-                                <button onclick="comment.send(this)" class="btn btn-primary btn-sm rounded-4" style="font-size: 0.8rem;"><i class="fa-solid fa-paper-plane me-1"></i>Send</button>
-                            </div>
+                            <form id="invite-form">
+                                <label for="form-comment" class="form-label fw-bold">
+                                    <i class="fa-solid fa-comment me-1"></i>Sebar Undangan
+                                </label>
+                                <input class="form-control shadow-sm mb-3 rounded-4" id="form-recipient-name" name="form-recipient-name" placeholder="Nama Penerima Undangan (ex: Dr. Fikri dan Istri)" required>
+                                <input class="form-control shadow-sm mb-3 rounded-4" id="form-recipient-phone" name="form-recipient-phone" placeholder="Nomor HP Penerima" required>
+                            
+                                <div class="d-flex justify-content-end mb-0">
+                                    <button type="submit" class="btn btn-primary btn-sm rounded-4" style="font-size: 0.8rem;">
+                                        <i class="fa-solid fa-paper-plane me-1"></i>Send
+                                    </button>
+                                </div>
+                            </form>
                         </div>
 
                         <!-- Comments -->
@@ -386,7 +393,7 @@
 
     <script>
         // Memuat file JSON
-        fetch('config.json')
+            fetch('config.json')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -399,7 +406,50 @@
 
                 // Ambil nilai dari data attribute
                 const dataUrl = document.body.getAttribute('data-url');
-            })
+
+                
+                // Kirim 
+                document.getElementById("invite-form").addEventListener("submit", async function(event) {
+                event.preventDefault(); // Mencegah form untuk reload halaman
+
+                // Ambil nilai dari input form
+                const name = document.getElementById("form-recipient-name").value;
+                const phone = document.getElementById("form-recipient-phone").value;
+
+                // Buat body request
+                const body = {
+                name: name,
+                phone_number: phone,
+                base_url: "https://staging.munola.com",
+                type: "kakap"
+                };
+
+                try {
+                // Kirim data menggunakan fetch API
+                const response = await fetch(dataUrl + "api/invitee", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(body)
+                });
+
+                // Cek apakah request sukses
+                if (response.ok) {
+                    alert("Undangan berhasil dikirim!");
+                } else {
+                    const errorData = await response.json();
+                    alert(`Error: ${errorData.message}`);
+                }
+                } catch (error) {
+                console.error("Error saat mengirim undangan:", error);
+                alert("Terjadi kesalahan saat mengirim undangan.");
+                }
+                });
+                // Kirim 
+
+
+                })
             .catch(error => {
                 console.error('Error loading config:', error);
             });
