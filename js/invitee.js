@@ -36,7 +36,7 @@ export const invitee = (() => {
 
         const response = await request(HTTP_POST, '/api/invitee')
             .token(session.getToken())
-            .body(dto.postInviteeRequest(name.value, phone.value, config.url, config.type))
+            .body(dto.postInviteeRequest(name.value, phone.value, config.base_url, config.type))
             .send(dto.postInviteeResponse)
             .then((res) => {
                 if (res.code === 201) {
