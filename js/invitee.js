@@ -17,33 +17,28 @@ export const invitee = (() => {
     const send = async (button) => {
         const id = button.getAttribute('data-uuid');
 
+        console.log('masuk');
         const name = document.getElementById("form-recipient-name");
-        const phone = document.getElementById("form-recipient-phone");
 
         if (name.value.length === 0) {
             alert('Please fill name');
             return;
         }
-        if (phone.value.length === 0) {
-            alert('Please fill phone');
-            return;
-        }
 
         name.disabled = true;
-        phone.disabled = true;
 
         const btn = util.disableButton(button);
 
         const response = await request(HTTP_POST, '/api/invitee')
             .token(session.getToken())
-            .body(dto.postInviteeRequest(name.value, phone.value, config.base_url, config.type))
+            .body(dto.postInviteeRequest(name.value, " ", config.base_url, config.type))
             .send(dto.postInviteeResponse)
             .then((res) => {
                 if (res.code === 201) {
                     Swal.fire({
                         footer: "munola.com",
                         title: "Kirim Undangan?",
-                        text: "Untuk: " + res.data.name + "(" + res.data.phone_number + ")",
+                        text: "Untuk: " + res.data.name,
                         icon: "success",
                         confirmButtonColor: "#075E54",
                         confirmButtonText: "Kirim WhatsApp",
